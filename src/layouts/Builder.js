@@ -170,8 +170,11 @@ export const Builder = ({ history }) => {
   const [sentences, setSentences] = useState([]);
 
   const handleAddSentence = () => {
-    if (message && !sentences.includes(message)) 
+    if (message && !sentences.includes(message)) {
       setSentences([...sentences, message]);
+      setMessage("");
+    }
+     
   };
 
   const handleSubmit = () => {
