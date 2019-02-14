@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 import loveSvg from "../assets/love.svg";
@@ -32,7 +32,7 @@ height: 100%;
   }
 }
 
-.button-create-yours {
+.button {
   width: 60%;
   min-height: 40px;
   border: solid 2px hsl(348, 100%, 61%);
@@ -52,6 +52,20 @@ height: 100%;
     transform: scale(1.05);
   }
 
+  :disabled {
+    border: none;
+    color: #fff;
+    background: hsl(348, 100%, 61%);
+
+    :hover {
+      transform: scale(1);
+    }
+  }
+
+}
+
+.button-slim {
+  width: 130px;
 }
 
 .sentences {
@@ -71,6 +85,17 @@ export const Display = ({ history }) => {
     history.push("/build");
   };
 
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(document.URL);
+      setButtonText("Lien copié !")
+    } catch (e) {
+      setButtonText("Impossible de copier");
+    }
+  };
+
+  const [buttonText, setButtonText] = useState("");
+
   return (
     <Fragment>
       <PageTitle title={`Je t'aime ${name}`} />
@@ -83,11 +108,13 @@ export const Display = ({ history }) => {
           Je t'aime {name}
         </h1>
 
-        <button className="button-create-yours" onClick={handleCreate}>Créer ton message !</button>
-
+        <button className="button" onClick={handleCreate}>Créer ton message !</button>
+       
         <Sentences className="sentences">
           {sentencify(sentences)}
-        </Sentences>
+        </Sentences> 
+
+        <button className="button button-slim" onClick={handleCopyLink} disabled={buttonText}>{buttonText || "Copier le lien"}</button>
       </Container>
     </Fragment>
   );
